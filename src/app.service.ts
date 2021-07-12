@@ -11,15 +11,14 @@ export class AppService {
 
   // GET ALL
   getAll(): Promise<User[]> {
-    return this.usersRepository.find({
-      relations: ["pets"]                                 // SELECT * FROM USER JOIN PETS
-    });
+    return this.usersRepository.find();// SELECT * FROM USER JOIN PETS
   }
 
   // GET SINGLE ITEM
   async getSingleUser(id: number): Promise<User> {
     try {
-      const user = this.usersRepository.findOneOrFail(id);
+      const user = await this.usersRepository.findOneOrFail(id);
+      console.log(user);
       return user;
     } catch(err) {
       throw err;
@@ -40,7 +39,7 @@ export class AppService {
   }
 
   // DELETE
-  async deleteUser(id: number): Promise<User> {
+  async removeUser(id: number): Promise<User> {
     const user = await this.getSingleUser(id);
     return this.usersRepository.remove(user);
   }
